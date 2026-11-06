@@ -1,5 +1,8 @@
 @host = http://localhost:5000
 
+### 200 - Estado de la aplicación publicada
+GET {{host}}/health
+
 ### 200 - Listar categorías
 GET {{host}}/api/categorias
 Accept: application/json

@@ -13,7 +13,7 @@ API de inventario para administrar categorías y productos. Resuelve la necesida
 ## Ejecución local
 
 1. Ejecuta `database.sql` en SQL Server.
-2. Ajusta `ConnectionStrings:DefaultConnection` en `appsettings.json` o define `ConnectionStrings__DefaultConnection` como variable de entorno.
+2. Define `ConnectionStrings__DefaultConnection` como variable de entorno. La cadena no se guarda en archivos del repositorio.
 3. Ejecuta `dotnet tool restore`, `dotnet restore` y `dotnet run --urls http://localhost:5000`.
 4. Abre `http://localhost:5000/swagger`.
 5. Ejecuta las solicitudes de `InventarioApi.http` para comprobar `200`, `201`, `204`, `400`, `404` y `409`.
@@ -77,13 +77,13 @@ La compilación Release terminó con **0 errores y 0 advertencias** y el anális
 - [Limitaciones oficiales del plan gratuito de Render](https://render.com/docs/free)
 - [Servicios web y Docker en Render](https://render.com/docs/web-services)
 
-## Pasos de despliegue elegidos
+## Despliegue preparado
 
-1. Crea Azure SQL Database con la oferta gratuita y con pausa automática al agotar el límite.
-2. Permite temporalmente la IP del equipo en el firewall del servidor y ejecuta `database.sql` contra la base.
-3. Crea una Web App .NET 10 en App Service con plan F1.
-4. En **Configuration**, guarda `ConnectionStrings__DefaultConnection` y `Cors__AllowedOrigin`; nunca subas la cadena real al repositorio.
-5. Publica desde Visual Studio, VS Code o GitHub Actions y abre `https://<app>.azurewebsites.net/swagger`.
-6. Ejecuta `InventarioApi.http` contra el dominio público y captura Swagger, Thunder Client o Postman mostrando cada endpoint y cada código.
+El repositorio incluye los componentes necesarios para completar la publicación:
 
-La aplicación queda preparada, pero el enlace público y las capturas deben generarse desde las cuentas de nube del estudiante, porque requieren credenciales y aceptación de condiciones del proveedor.
+- `database.azure.sql`: crea el esquema y los datos de ejemplo dentro de una Azure SQL Database existente.
+- `.github/workflows/deploy-azure.yml`: compila .NET 10 y publica manualmente en Azure App Service desde GitHub Actions.
+- `/health`: endpoint de comprobación del proceso publicado.
+- `docs/DESPLIEGUE-AZURE.md`: guía completa para crear los recursos, registrar los secretos y verificar el dominio público.
+
+La creación de los recursos, el enlace público y las capturas se completan desde la cuenta de Azure del estudiante, porque requieren sus credenciales y la aceptación de las condiciones del proveedor.
