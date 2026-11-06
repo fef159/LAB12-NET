@@ -1,8 +1,8 @@
 {
   "Url": "https://lab12-net-app-9k2m-dfafgxhbbkbthtbt.westus3-01.azurewebsites.net",
-  "EjecutadoUtc": "2026-11-06 04:17:06Z",
-  "Total": 17,
-  "Aprobadas": 17,
+  "EjecutadoUtc": "2026-11-06 04:30:02Z",
+  "Total": 24,
+  "Aprobadas": 24,
   "Fallidas": 0,
   "Pruebas": [
     {
@@ -21,7 +21,7 @@
       "Esperado": 200,
       "Obtenido": 200,
       "Resultado": "APROBADO",
-      "Detalle": "{\"servicio\":\"Veterinaria LAB12 API\",\"estado\":\"Activo\",\"proveedorDatos\":\"Microsoft.EntityFrameworkCore.SqlServer\",\"utc\":\"2026-11-06T04:16:52.2585018Z\"}"
+      "Detalle": "{\"servicio\":\"Veterinaria LAB12 API\",\"estado\":\"Activo\",\"proveedorDatos\":\"Microsoft.EntityFrameworkCore.SqlServer\",\"utc\":\"2026-11-06T04:29:41.0390972Z\"}"
     },
     {
       "Prueba": "Lista de propietarios",
@@ -39,7 +39,7 @@
       "Esperado": 404,
       "Obtenido": 404,
       "Resultado": "APROBADO",
-      "Detalle": "{\"type\":\"https://tools.ietf.org/html/rfc9110#section-15.5.5\",\"title\":\"Not Found\",\"status\":404,\"traceId\":\"00-0fbe0653aa9a8ecb1335b79e5d04ac6a-248671a5647b00fa-00\"}"
+      "Detalle": "{\"type\":\"https://tools.ietf.org/html/rfc9110#section-15.5.5\",\"title\":\"Not Found\",\"status\":404,\"traceId\":\"00-66f8113908eaec259e9017d52853816f-2cf281cf7ebc1979-00\"}"
     },
     {
       "Prueba": "Validación automática del modelo",
@@ -57,12 +57,21 @@
       "Esperado": 201,
       "Obtenido": 201,
       "Resultado": "APROBADO",
-      "Detalle": "{\"id\":4,\"nombre\":\"Prueba Despliegue\",\"email\":\"codex.lab12.1793938616@example.com\",\"telefono\":\"+51 900 000 001\"}"
+      "Detalle": "{\"id\":5,\"nombre\":\"Prueba Despliegue\",\"email\":\"codex.lab12.1793939385@example.com\",\"telefono\":\"+51 900 000 001\"}"
+    },
+    {
+      "Prueba": "Consultar propietario creado",
+      "Metodo": "GET",
+      "Ruta": "/api/propietarios/5",
+      "Esperado": 200,
+      "Obtenido": 200,
+      "Resultado": "APROBADO",
+      "Detalle": "{\"id\":5,\"nombre\":\"Prueba Despliegue\",\"email\":\"codex.lab12.1793939385@example.com\",\"telefono\":\"+51 900 000 001\"}"
     },
     {
       "Prueba": "PUT con id inconsistente",
       "Metodo": "PUT",
-      "Ruta": "/api/propietarios/4",
+      "Ruta": "/api/propietarios/5",
       "Esperado": 400,
       "Obtenido": 400,
       "Resultado": "APROBADO",
@@ -71,7 +80,7 @@
     {
       "Prueba": "Actualizar propietario",
       "Metodo": "PUT",
-      "Ruta": "/api/propietarios/4",
+      "Ruta": "/api/propietarios/5",
       "Esperado": 204,
       "Obtenido": 204,
       "Resultado": "APROBADO",
@@ -98,7 +107,7 @@
     {
       "Prueba": "Ruta anidada sin mascotas",
       "Metodo": "GET",
-      "Ruta": "/api/propietarios/4/mascotas",
+      "Ruta": "/api/propietarios/5/mascotas",
       "Esperado": 200,
       "Obtenido": 200,
       "Resultado": "APROBADO",
@@ -120,21 +129,75 @@
       "Esperado": 201,
       "Obtenido": 201,
       "Resultado": "APROBADO",
-      "Detalle": "{\"id\":4,\"nombre\":\"Nube\",\"especie\":\"Gato\",\"edad\":3,\"propietarioId\":4,\"propietario\":null}"
+      "Detalle": "{\"id\":5,\"nombre\":\"Nube\",\"especie\":\"Gato\",\"edad\":3,\"propietarioId\":5,\"propietario\":null}"
+    },
+    {
+      "Prueba": "Consultar mascota creada",
+      "Metodo": "GET",
+      "Ruta": "/api/mascotas/5",
+      "Esperado": 200,
+      "Obtenido": 200,
+      "Resultado": "APROBADO",
+      "Detalle": "{\"id\":5,\"nombre\":\"Nube\",\"especie\":\"Gato\",\"edad\":3,\"propietarioId\":5,\"propietario\":{\"id\":5,\"nombre\":\"Prueba Actualizada\",\"email\":\"codex.lab12.1793939385@example.com\",\"telefono\":\"+51 900 000 002\"}}"
+    },
+    {
+      "Prueba": "Mascota inexistente",
+      "Metodo": "GET",
+      "Ruta": "/api/mascotas/999999",
+      "Esperado": 404,
+      "Obtenido": 404,
+      "Resultado": "APROBADO",
+      "Detalle": "{\"type\":\"https://tools.ietf.org/html/rfc9110#section-15.5.5\",\"title\":\"Not Found\",\"status\":404,\"traceId\":\"00-d11d5b9404f441f2dd827afd3c283ccf-64eede5e8a5c231d-00\"}"
+    },
+    {
+      "Prueba": "PUT mascota con id inconsistente",
+      "Metodo": "PUT",
+      "Ruta": "/api/mascotas/5",
+      "Esperado": 400,
+      "Obtenido": 400,
+      "Resultado": "APROBADO",
+      "Detalle": "{\"mensaje\":\"El id de la ruta no coincide con el cuerpo.\"}"
+    },
+    {
+      "Prueba": "Actualizar mascota",
+      "Metodo": "PUT",
+      "Ruta": "/api/mascotas/5",
+      "Esperado": 204,
+      "Obtenido": 204,
+      "Resultado": "APROBADO",
+      "Detalle": ""
+    },
+    {
+      "Prueba": "Verificar mascota actualizada",
+      "Metodo": "GET",
+      "Ruta": "/api/mascotas/5",
+      "Esperado": 200,
+      "Obtenido": 200,
+      "Resultado": "APROBADO",
+      "Detalle": "{\"id\":5,\"nombre\":\"Nube Actualizada\",\"especie\":\"Gato\",\"edad\":4,\"propietarioId\":5,\"propietario\":{\"id\":5,\"nombre\":\"Prueba Actualizada\",\"email\":\"codex.lab12.1793939385@example.com\",\"telefono\":\"+51 900 000 002\"}}"
+    },
+    {
+      "Prueba": "Nombre de mascota duplicado",
+      "Metodo": "POST",
+      "Ruta": "/api/mascotas",
+      "Esperado": 409,
+      "Obtenido": 409,
+      "Resultado": "APROBADO",
+      "Detalle": "{\"mensaje\":\"Ese propietario ya tiene una mascota con el mismo nombre.\"}"
     },
     {
       "Prueba": "Ruta anidada con datos",
       "Metodo": "GET",
-      "Ruta": "/api/propietarios/4/mascotas",
+      "Ruta": "/api/propietarios/5/mascotas",
       "Esperado": 200,
       "Obtenido": 200,
       "Resultado": "APROBADO",
-      "Detalle": "[{\"id\":4,\"nombre\":\"Nube\",\"especie\":\"Gato\",\"edad\":3,\"propietarioId\":4,\"propietario\":null}]"
+      "Detalle": "[{\"id\":5,\"nombre\":\"Nube Actualizada\",\"especie\":\"Gato\",\"edad\":4,\"propietarioId\":5,\"propietario\":null}]"
     },
     {
       "Prueba": "Integridad referencial al eliminar",
       "Metodo": "DELETE",
-      "Ruta": "/api/propietarios/4",
+      "Ruta": "/api/propietarios/5",
       "Esperado": 409,
       "Obtenido": 409,
       "Resultado": "APROBADO",
@@ -143,7 +206,7 @@
     {
       "Prueba": "Eliminar mascota",
       "Metodo": "DELETE",
-      "Ruta": "/api/mascotas/4",
+      "Ruta": "/api/mascotas/5",
       "Esperado": 204,
       "Obtenido": 204,
       "Resultado": "APROBADO",
@@ -152,7 +215,7 @@
     {
       "Prueba": "Eliminar propietario",
       "Metodo": "DELETE",
-      "Ruta": "/api/propietarios/4",
+      "Ruta": "/api/propietarios/5",
       "Esperado": 204,
       "Obtenido": 204,
       "Resultado": "APROBADO",

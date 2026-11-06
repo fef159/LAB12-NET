@@ -36,8 +36,8 @@ API REST desarrollada con ASP.NET Core .NET 10 y Entity Framework Core para admi
 | DELETE | `/api/propietarios/{id}` | 204, 404, 409 |
 | GET | `/api/mascotas?especie={valor}` | 200 |
 | GET | `/api/mascotas/{id}` | 200, 404 |
-| POST | `/api/mascotas` | 201, 400 |
-| PUT | `/api/mascotas/{id}` | 204, 400, 404 |
+| POST | `/api/mascotas` | 201, 400, 409 |
+| PUT | `/api/mascotas/{id}` | 204, 400, 404, 409 |
 | DELETE | `/api/mascotas/{id}` | 204, 404 |
 
 ## Seguridad y configuración
@@ -59,9 +59,27 @@ Después, abre la dirección de Swagger indicada por la consola. Para utilizar S
 
 `database.sql` crea las tablas `Propietarios` y `Mascotas`, sus restricciones y datos de ejemplo. El script elimina las tablas existentes antes de recrearlas, por lo que debe ejecutarse únicamente en una base de datos de laboratorio.
 
+## Database First con Scaffold
+
+El modelo Database First se generó realmente con `dotnet ef dbcontext scaffold` a partir de una base SQL Server creada con `database.sql`. Los archivos generados están en `Scaffolded/Models` y `Scaffolded/Data`; se utilizó `--no-onconfiguring`, por lo que no contienen ninguna cadena de conexión. El manifiesto `.config/dotnet-tools.json` fija `dotnet-ef` 10.0.14.
+
+Para reproducir todo el procedimiento en Windows con SQL Server LocalDB:
+
+```powershell
+.\scripts\Scaffold-DatabaseFirst.ps1
+```
+
+El código operativo de `Models` y `Data/VeterinariaContext.cs` conserva los ajustes posteriores requeridos por la práctica: Data Annotations adicionales, navegación hija nullable y `JsonIgnore` para evitar ciclos. La explicación completa y el comando expandido están en `docs/SCAFFOLD-DATABASE-FIRST.md`.
+
+## Elección de servicios gratuitos
+
+Se eligió Azure App Service F1 porque ejecuta ASP.NET Core .NET 10 directamente, integra despliegue ZIP, Swagger, variables de entorno e identidad administrada. Frente a alternativas como Render o Railway, evita adaptar el proyecto a un contenedor o depender de créditos temporales y mantiene la aplicación dentro del mismo proveedor que la base de datos.
+
+Se eligió Azure SQL Database Free porque conserva SQL Server y el proveedor `Microsoft.EntityFrameworkCore.SqlServer` utilizado durante el desarrollo. Frente a PostgreSQL gratuito en Neon o Supabase, no requiere cambiar el proveedor de EF Core ni adaptar `database.sql`. Además, la identidad administrada elimina contraseñas entre App Service y Azure SQL.
+
 ## Pruebas públicas
 
-El script `tests/Test-Lab12Api.ps1` ejecuta 17 pruebas contra la API publicada y limpia los registros creados durante la ejecución. Los resultados verificados están en `docs/public-test-results.json` y la matriz visual en `docs/captura-pruebas-publicas.png`.
+El script `tests/Test-Lab12Api.ps1` ejecuta 24 pruebas contra la API publicada, cubre todos los endpoints de Propietarios y Mascotas y limpia los registros creados durante la ejecución. Los resultados verificados están en `docs/public-test-results.json` y las matrices visuales en `docs/captura-pruebas-publicas-1.png` y `docs/captura-pruebas-publicas-2.png`.
 
-Resultado final: **17 pruebas aprobadas de 17, sin fallos**.
+Resultado final: **24 pruebas aprobadas de 24, sin fallos**.
 

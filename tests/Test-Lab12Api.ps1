@@ -58,6 +58,9 @@ try {
     $owner = $createdOwner.Content | ConvertFrom-Json
     $ownerId = [int]$owner.id
 
+    Invoke-ApiTest 'Consultar propietario creado' GET "/api/propietarios/$ownerId" 200 `
+        -ExtraCheck { param($r) $r.Content -match 'Prueba Despliegue' } | Out-Null
+
     Invoke-ApiTest 'PUT con id inconsistente' PUT "/api/propietarios/$ownerId" 400 -Body @{
         id = $ownerId + 1; nombre = 'Prueba Despliegue'; email = $email; telefono = '+51 900 000 001'
     } | Out-Null
@@ -79,7 +82,22 @@ try {
     $pet = $createdPet.Content | ConvertFrom-Json
     $petId = [int]$pet.id
 
-    Invoke-ApiTest 'Ruta anidada con datos' GET "/api/propietarios/$ownerId/mascotas" 200 -ExtraCheck { param($r) $r.Content -match 'Nube' } | Out-Null
+    Invoke-ApiTest 'Consultar mascota creada' GET "/api/mascotas/$petId" 200 `
+        -ExtraCheck { param($r) $r.Content -match 'Nube' } | Out-Null
+    Invoke-ApiTest 'Mascota inexistente' GET '/api/mascotas/999999' 404 | Out-Null
+    Invoke-ApiTest 'PUT mascota con id inconsistente' PUT "/api/mascotas/$petId" 400 -Body @{
+        id = $petId + 1; nombre = 'Nube'; especie = 'Gato'; edad = 3; propietarioId = $ownerId
+    } | Out-Null
+    Invoke-ApiTest 'Actualizar mascota' PUT "/api/mascotas/$petId" 204 -Body @{
+        id = $petId; nombre = 'Nube Actualizada'; especie = 'Gato'; edad = 4; propietarioId = $ownerId
+    } | Out-Null
+    Invoke-ApiTest 'Verificar mascota actualizada' GET "/api/mascotas/$petId" 200 `
+        -ExtraCheck { param($r) $r.Content -match 'Nube Actualizada' } | Out-Null
+    Invoke-ApiTest 'Nombre de mascota duplicado' POST '/api/mascotas' 409 -Body @{
+        id = 0; nombre = 'Nube Actualizada'; especie = 'Perro'; edad = 2; propietarioId = $ownerId
+    } | Out-Null
+
+    Invoke-ApiTest 'Ruta anidada con datos' GET "/api/propietarios/$ownerId/mascotas" 200 -ExtraCheck { param($r) $r.Content -match 'Nube Actualizada' } | Out-Null
     Invoke-ApiTest 'Integridad referencial al eliminar' DELETE "/api/propietarios/$ownerId" 409 | Out-Null
     Invoke-ApiTest 'Eliminar mascota' DELETE "/api/mascotas/$petId" 204 | Out-Null
     $petId = $null
