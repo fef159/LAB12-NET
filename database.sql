@@ -1,35 +1,29 @@
-IF DB_ID(N'InventarioDb') IS NULL
-    CREATE DATABASE InventarioDb;
-GO
+IF OBJECT_ID(N'dbo.Mascotas', N'U') IS NOT NULL DROP TABLE dbo.Mascotas;
+IF OBJECT_ID(N'dbo.Propietarios', N'U') IS NOT NULL DROP TABLE dbo.Propietarios;
 
-USE InventarioDb;
-GO
-
-CREATE TABLE Categorias (
-    Id INT IDENTITY(1,1) CONSTRAINT PK_Categorias PRIMARY KEY,
-    Nombre NVARCHAR(80) NOT NULL CONSTRAINT UQ_Categorias_Nombre UNIQUE,
-    Descripcion NVARCHAR(250) NULL
+CREATE TABLE dbo.Propietarios (
+    Id INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_Propietarios PRIMARY KEY,
+    Nombre NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(150) NOT NULL,
+    Telefono NVARCHAR(20) NULL,
+    CONSTRAINT UQ_Propietarios_Email UNIQUE (Email)
 );
-GO
 
-CREATE TABLE Productos (
-    Id INT IDENTITY(1,1) CONSTRAINT PK_Productos PRIMARY KEY,
-    Nombre NVARCHAR(120) NOT NULL,
-    Sku NVARCHAR(30) NOT NULL CONSTRAINT UQ_Productos_Sku UNIQUE,
-    Precio DECIMAL(12,2) NOT NULL CONSTRAINT CK_Productos_Precio CHECK (Precio > 0),
-    Stock INT NOT NULL CONSTRAINT CK_Productos_Stock CHECK (Stock >= 0),
-    CategoriaId INT NOT NULL,
-    CONSTRAINT FK_Productos_Categorias FOREIGN KEY (CategoriaId)
-        REFERENCES Categorias(Id) ON DELETE NO ACTION
+CREATE TABLE dbo.Mascotas (
+    Id INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_Mascotas PRIMARY KEY,
+    Nombre NVARCHAR(80) NOT NULL,
+    Especie NVARCHAR(50) NOT NULL,
+    Edad INT NOT NULL CONSTRAINT CK_Mascotas_Edad CHECK (Edad BETWEEN 0 AND 40),
+    PropietarioId INT NOT NULL,
+    CONSTRAINT FK_Mascotas_Propietarios FOREIGN KEY (PropietarioId)
+        REFERENCES dbo.Propietarios(Id)
 );
-GO
 
-INSERT INTO Categorias (Nombre, Descripcion) VALUES
-(N'Computadores', N'Equipos de escritorio y portátiles'),
-(N'Accesorios', N'Periféricos y complementos');
+INSERT INTO dbo.Propietarios (Nombre, Email, Telefono) VALUES
+(N'Ana Torres', N'ana.torres@example.com', N'+51 987 111 222'),
+(N'Luis Mendoza', N'luis.mendoza@example.com', N'+51 986 333 444');
 
-INSERT INTO Productos (Nombre, Sku, Precio, Stock, CategoriaId) VALUES
-(N'Portátil empresarial 14 pulgadas', N'PORT-001', 3299000, 8, 1),
-(N'Monitor IPS 24 pulgadas', N'MON-001', 749900, 15, 2),
-(N'Teclado mecánico', N'TEC-001', 289900, 20, 2);
-GO
+INSERT INTO dbo.Mascotas (Nombre, Especie, Edad, PropietarioId) VALUES
+(N'Luna', N'Perro', 4, 1),
+(N'Milo', N'Gato', 2, 1),
+(N'Kira', N'Perro', 6, 2);

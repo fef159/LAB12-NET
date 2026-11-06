@@ -1,0 +1,162 @@
+{
+  "Url": "https://lab12-net-app-9k2m-dfafgxhbbkbthtbt.westus3-01.azurewebsites.net",
+  "EjecutadoUtc": "2026-11-06 04:17:06Z",
+  "Total": 17,
+  "Aprobadas": 17,
+  "Fallidas": 0,
+  "Pruebas": [
+    {
+      "Prueba": "Swagger publicado",
+      "Metodo": "GET",
+      "Ruta": "/swagger/index.html",
+      "Esperado": 200,
+      "Obtenido": 200,
+      "Resultado": "APROBADO",
+      "Detalle": "<!-- HTML for static distribution bundle build -->\r\n<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <title>Swagger UI</title>\r\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"./swagger-ui.css\"…"
+    },
+    {
+      "Prueba": "Estado usa Azure SQL",
+      "Metodo": "GET",
+      "Ruta": "/api/estado",
+      "Esperado": 200,
+      "Obtenido": 200,
+      "Resultado": "APROBADO",
+      "Detalle": "{\"servicio\":\"Veterinaria LAB12 API\",\"estado\":\"Activo\",\"proveedorDatos\":\"Microsoft.EntityFrameworkCore.SqlServer\",\"utc\":\"2026-11-06T04:16:52.2585018Z\"}"
+    },
+    {
+      "Prueba": "Lista de propietarios",
+      "Metodo": "GET",
+      "Ruta": "/api/propietarios",
+      "Esperado": 200,
+      "Obtenido": 200,
+      "Resultado": "APROBADO",
+      "Detalle": "[{\"id\":1,\"nombre\":\"Ana Torres\",\"email\":\"ana.torres@lab12.test\",\"telefono\":\"999-111-222\"},{\"id\":2,\"nombre\":\"Luis Mendoza\",\"email\":\"luis.mendoza@lab12.test\",\"telefono\":\"999-333-444\"}]"
+    },
+    {
+      "Prueba": "Propietario inexistente",
+      "Metodo": "GET",
+      "Ruta": "/api/propietarios/999999",
+      "Esperado": 404,
+      "Obtenido": 404,
+      "Resultado": "APROBADO",
+      "Detalle": "{\"type\":\"https://tools.ietf.org/html/rfc9110#section-15.5.5\",\"title\":\"Not Found\",\"status\":404,\"traceId\":\"00-0fbe0653aa9a8ecb1335b79e5d04ac6a-248671a5647b00fa-00\"}"
+    },
+    {
+      "Prueba": "Validación automática del modelo",
+      "Metodo": "POST",
+      "Ruta": "/api/propietarios",
+      "Esperado": 400,
+      "Obtenido": 400,
+      "Resultado": "APROBADO",
+      "Detalle": "{\"type\":\"https://tools.ietf.org/html/rfc9110#section-15.5.1\",\"title\":\"One or more validation errors occurred.\",\"status\":400,\"errors\":{\"Email\":[\"The Email field is not a valid e-mail address.\"],\"Nombre\":[\"The field Nombre…"
+    },
+    {
+      "Prueba": "Crear propietario",
+      "Metodo": "POST",
+      "Ruta": "/api/propietarios",
+      "Esperado": 201,
+      "Obtenido": 201,
+      "Resultado": "APROBADO",
+      "Detalle": "{\"id\":4,\"nombre\":\"Prueba Despliegue\",\"email\":\"codex.lab12.1793938616@example.com\",\"telefono\":\"+51 900 000 001\"}"
+    },
+    {
+      "Prueba": "PUT con id inconsistente",
+      "Metodo": "PUT",
+      "Ruta": "/api/propietarios/4",
+      "Esperado": 400,
+      "Obtenido": 400,
+      "Resultado": "APROBADO",
+      "Detalle": "{\"mensaje\":\"El id de la ruta no coincide con el cuerpo.\"}"
+    },
+    {
+      "Prueba": "Actualizar propietario",
+      "Metodo": "PUT",
+      "Ruta": "/api/propietarios/4",
+      "Esperado": 204,
+      "Obtenido": 204,
+      "Resultado": "APROBADO",
+      "Detalle": ""
+    },
+    {
+      "Prueba": "Correo duplicado",
+      "Metodo": "POST",
+      "Ruta": "/api/propietarios",
+      "Esperado": 409,
+      "Obtenido": 409,
+      "Resultado": "APROBADO",
+      "Detalle": "{\"mensaje\":\"Ya existe un propietario con ese correo electrónico.\"}"
+    },
+    {
+      "Prueba": "Filtro LINQ por especie",
+      "Metodo": "GET",
+      "Ruta": "/api/mascotas?especie=Perro",
+      "Esperado": 200,
+      "Obtenido": 200,
+      "Resultado": "APROBADO",
+      "Detalle": "[{\"id\":1,\"nombre\":\"Luna\",\"especie\":\"Perro\",\"edad\":0,\"propietarioId\":1,\"propietario\":{\"id\":1,\"nombre\":\"Ana Torres\",\"email\":\"ana.torres@lab12.test\",\"telefono\":\"999-111-222\"}}]"
+    },
+    {
+      "Prueba": "Ruta anidada sin mascotas",
+      "Metodo": "GET",
+      "Ruta": "/api/propietarios/4/mascotas",
+      "Esperado": 200,
+      "Obtenido": 200,
+      "Resultado": "APROBADO",
+      "Detalle": "[]"
+    },
+    {
+      "Prueba": "Validación de clave foránea",
+      "Metodo": "POST",
+      "Ruta": "/api/mascotas",
+      "Esperado": 400,
+      "Obtenido": 400,
+      "Resultado": "APROBADO",
+      "Detalle": "{\"mensaje\":\"El propietario indicado no existe.\"}"
+    },
+    {
+      "Prueba": "Crear mascota",
+      "Metodo": "POST",
+      "Ruta": "/api/mascotas",
+      "Esperado": 201,
+      "Obtenido": 201,
+      "Resultado": "APROBADO",
+      "Detalle": "{\"id\":4,\"nombre\":\"Nube\",\"especie\":\"Gato\",\"edad\":3,\"propietarioId\":4,\"propietario\":null}"
+    },
+    {
+      "Prueba": "Ruta anidada con datos",
+      "Metodo": "GET",
+      "Ruta": "/api/propietarios/4/mascotas",
+      "Esperado": 200,
+      "Obtenido": 200,
+      "Resultado": "APROBADO",
+      "Detalle": "[{\"id\":4,\"nombre\":\"Nube\",\"especie\":\"Gato\",\"edad\":3,\"propietarioId\":4,\"propietario\":null}]"
+    },
+    {
+      "Prueba": "Integridad referencial al eliminar",
+      "Metodo": "DELETE",
+      "Ruta": "/api/propietarios/4",
+      "Esperado": 409,
+      "Obtenido": 409,
+      "Resultado": "APROBADO",
+      "Detalle": "{\"mensaje\":\"No se puede eliminar un propietario que tiene mascotas registradas.\"}"
+    },
+    {
+      "Prueba": "Eliminar mascota",
+      "Metodo": "DELETE",
+      "Ruta": "/api/mascotas/4",
+      "Esperado": 204,
+      "Obtenido": 204,
+      "Resultado": "APROBADO",
+      "Detalle": ""
+    },
+    {
+      "Prueba": "Eliminar propietario",
+      "Metodo": "DELETE",
+      "Ruta": "/api/propietarios/4",
+      "Esperado": 204,
+      "Obtenido": 204,
+      "Resultado": "APROBADO",
+      "Detalle": ""
+    }
+  ]
+}

@@ -1,8 +1,12 @@
 bin/
 obj/
 .vs/
+.vscode/
 *.user
-appsettings.Production.json
-*.publishsettings
-publish/
+*.suo
+*.pdb
+*.log
 .env
+appsettings.Local.json
+publish/
+

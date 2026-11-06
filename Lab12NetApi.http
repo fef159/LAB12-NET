@@ -1,0 +1,28 @@
+@BaseUrl = https://lab12-net-app-9k2m-dfafgxhbbkbthtbt.westus3-01.azurewebsites.net
+
+### Estado y proveedor de datos
+GET {{BaseUrl}}/api/estado
+Accept: application/json
+
+### Listar propietarios
+GET {{BaseUrl}}/api/propietarios
+Accept: application/json
+
+### Filtrar mascotas por especie con LINQ
+GET {{BaseUrl}}/api/mascotas?especie=Perro
+Accept: application/json
+
+### Validar un recurso inexistente
+GET {{BaseUrl}}/api/propietarios/999999
+Accept: application/json
+
+### Validación automática del modelo
+POST {{BaseUrl}}/api/propietarios
+Content-Type: application/json
+
+{
+  "nombre": "A",
+  "email": "correo-invalido",
+  "telefono": ""
+}
+
